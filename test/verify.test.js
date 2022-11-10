@@ -37,29 +37,23 @@ afterEach(async () => {
   await browser.close();
 });
 
-describe('the javascript in the script element', () => {
-  it('should be cut and moved to the index.js file', async () => {
-    const innerHtml = await page.$eval('body script', (script) => {
-      return script.innerHTML.trim();
-    })
-    
-    expect(innerHtml).toBe('');
+describe('the index.js file', () => {
+  it('should define a variable named courseLength', async () => {
+    const courseLength = await page.evaluate(() => courseLength);
+    expect(courseLength).toBeDefined();
   });
   
-  it('should point to the index.js file', async () => {
-    const src = await page.$eval('body script', (script) => {
-      return script.getAttribute('src');
-    })
-    
-    expect(src).toBe("index.js")
+  it('should assign courseLength to the number 20', async () => {
+    const courseLength = await page.evaluate(() => courseLength);
+    expect(courseLength).toBe(20);
   });
   
-  it('should set the result element to 50', async () => {
+  it('should assign the innerHTML of the HTML element with the id result to the courseLength', async () => {
     const innerHtml = await page.$eval('#result', (result) => {
       return result.innerHTML;
-    })
-      
-    expect(innerHtml).toBe('50');
+    });
+    
+    expect(innerHtml).toBe('20')
   });
 });
 
